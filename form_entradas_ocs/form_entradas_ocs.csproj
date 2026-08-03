@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8B7A69DF-1A96-47A8-A1F5-C3B6BF92CD55}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>form_entradas_ocs</RootNamespace>
+    <AssemblyName>form_entradas_ocs</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetZip">
+      <HintPath>..\..\entradas\publicacion\bin\DotNetZip.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>C:\Users\Angel Escamilla\Downloads\itextsharp\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Utilerias">
+      <HintPath>C:\SisGabWeb\Utilerias.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="calendario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="calendario.Designer.cs">
+      <DependentUpon>calendario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\ConsultaController.cs" />
+    <Compile Include="Data\EntradaOcMotor.cs" />
+    <Compile Include="empaques.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="empaques.Designer.cs">
+      <DependentUpon>empaques.cs</DependentUpon>
+    </Compile>
+    <Compile Include="etiquetas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="etiquetas.Designer.cs">
+      <DependentUpon>etiquetas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="factura.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="factura.Designer.cs">
+      <DependentUpon>factura.cs</DependentUpon>
+    </Compile>
+    <Compile Include="factura_extra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="factura_extra.Designer.cs">
+      <DependentUpon>factura_extra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fact_extras.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fact_extras.Designer.cs">
+      <DependentUpon>fact_extras.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ConsultaModels.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistroSeries.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistroSeries.Designer.cs">
+      <DependentUpon>RegistroSeries.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="calendario.resx">
+      <DependentUpon>calendario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="empaques.resx">
+      <DependentUpon>empaques.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="etiquetas.resx">
+      <DependentUpon>etiquetas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="factura.resx">
+      <DependentUpon>factura.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="factura_extra.resx">
+      <DependentUpon>factura_extra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fact_extras.resx">
+      <DependentUpon>fact_extras.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="RegistroSeries.resx">
+      <DependentUpon>RegistroSeries.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.calendar.day2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.calendar.day3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.door.leave 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\botonImprimir.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\calender_green_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Degradado.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\excel 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExcelMini.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\out.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\salir.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\txt.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wzprint.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.printer.text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.clean.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.edit.box.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.food.silverware.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.location.checkin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.window.minimize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.power - Copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.grade.e.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NOTA DE ENTRADA-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NOTA DE ENTRADA-011.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 y x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.tag.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\invoice_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appbar.cabinet.files.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogoMrlucky.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eliminar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\limpiar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pdf.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\guardar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\calculadora.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -105,24 +105,8 @@ namespace form_entradas_ocs
                 catch (XmlException ex)
                 {
                     MessageBox.Show("Se detectó un error en el archivo, se enviará a el departamento de sistemas para resolverlo", "SISEMP", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    MailMessage message = new MailMessage();
-                    SmtpClient smtpClient = new SmtpClient();
-                    Attachment attachment = new Attachment(this.openFileDialog1.FileName);
-                    message.From = new MailAddress("aescamilla@mrlucky.com.mx");
-                    message.To.Add(new MailAddress("aescamilla@mrlucky.com.mx"));
-                    message.Subject = "Error en archivo XML";
-                    message.SubjectEncoding = Encoding.UTF8;
                     string str2 = "<table border='1'><tr><td align='center'><b>XML</b></td></tr><tr><td>Archivo dañado</td></tr></table>";
-                    message.Body = str2;
-                    message.BodyEncoding = Encoding.UTF8;
-                    message.IsBodyHtml = true;
-                    message.Attachments.Add(attachment);
-                    message.From = new MailAddress("aescamilla@mrlucky.com.mx");
-                    smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("aescamilla", "atrejo");
-                    smtpClient.Port = 587;
-                    smtpClient.Host = "mail1.mrlucky.com.mx";
-                    smtpClient.EnableSsl = true;
-                    smtpClient.Send(message);
+                    form_entradas_ocs.Data.GraphMailService.Enviar("aescamilla@mrlucky.com.mx", "Error en archivo XML", str2, this.openFileDialog1.FileName);
                     return;
                 }
 
@@ -453,7 +437,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "4.1", lblEntrada.Text + " " + ex.ToString() + " " + qry, "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + lblEntrada.Text + " " + ex.ToString() + " " + qry);
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + lblEntrada.Text + " " + ex.ToString() + " " + qry);
             }
         }
 
@@ -482,43 +466,15 @@ namespace form_entradas_ocs
                 "<tr><td colspan='2'>FAVOR DE CONSIDERAR ESTA MODIFICACION SI YA REALIZO LA DESCARGA O RECIBIO LOS ARCHIVOS POR CORREO DE LOS DOCUMENTOS ANTES DE ESTE MOVIMIENTO.</td></tr></table>";
 
 
-            System.Net.Mail.MailMessage mnsg = new System.Net.Mail.MailMessage();
-            mnsg.To.Add("sistemas@mrlucky.com.mx");//usu_mail
-            //mnsg.To.Add("cmoreno@mrlucky.com.mx");
-            mnsg.CC.Add("pgonzalez@mrlucky.com.mx");
-            //mnsg.CC.Add("compras@mrlucky.com.mx");
-            //mnsg.CC.Add("meflores@mrlucky.com.mx");
-            mnsg.CC.Add("avaladez@mrlucky.com.mx");
-            mnsg.CC.Add("recepcion@mrlucky.com.mx");
-            mnsg.CC.Add("almacen@mrlucky.com.mx");
-
-            //if (des != "")
-            //{
-            mnsg.CC.Add("lupita@grupou.mx");
-            mnsg.CC.Add("viridiana@grupou.mx");
-            //}
-
-            //mnsg.CC.Add("aescamilla@mrlucky.com.mx");
-            mnsg.Bcc.Add("aescamilla@mrlucky.com.mx");
-            //
-            mnsg.Subject = "Cancelación de descarga de archivo por agregado de factura extra: " + lblEntrada.Text + ".";
-            mnsg.SubjectEncoding = System.Text.Encoding.UTF8;
-            mnsg.Body = cuerpo;
-            mnsg.BodyEncoding = System.Text.Encoding.UTF8;
-            mnsg.IsBodyHtml = true;
-            //mnsg.From = new MailAddress("aescamilla@mrlucky.com.mx");
-            mnsg.From = new MailAddress("sistemas@mrlucky.com.mx");
-
-            SmtpClient cliente = new SmtpClient();
-            cliente.Credentials = new System.Net.NetworkCredential("sistemas", "sisgab");
-            //cliente.Credentials = new System.Net.NetworkCredential("aescamilla", "atrejo");
-            cliente.Port = 587;
-            cliente.EnableSsl = true;
-            cliente.Host = "mail1.mrlucky.com.mx";
+            string[] para = { "sistemas@mrlucky.com.mx" };
+            string[] cc = { "pgonzalez@mrlucky.com.mx", "avaladez@mrlucky.com.mx", "recepcion@mrlucky.com.mx",
+                "almacen@mrlucky.com.mx", "lupita@grupou.mx", "viridiana@grupou.mx" };
+            string[] cco = { "aescamilla@mrlucky.com.mx" };
 
             try
             {
-                cliente.Send(mnsg);
+                form_entradas_ocs.Data.GraphMailService.Enviar(para, cc, cco,
+                    "Cancelación de descarga de archivo por agregado de factura extra: " + lblEntrada.Text + ".", cuerpo, null);
             }
             catch (Exception)
             {

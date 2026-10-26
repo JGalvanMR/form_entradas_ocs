@@ -16,7 +16,8 @@ namespace form_entradas_ocs.Data
     {
         private const string ClientId = "c982ac22-b59a-441c-905a-9eb273ade26b";
         private const string TenantId = "d20460dd-675d-4b51-87cc-9d10f9175633";
-        private const string BuzonRemitente = "embarques@mrlucky.com.mx";
+        // Cuenta desde la que se envían todos los correos del sistema.
+        private const string Remitente = "sistemasgab@mrlucky.com.mx";
         private const string VariableSecreto = "MRLUCKY_GRAPH_SECRET";
 
         private static readonly object _candado = new object();
@@ -51,7 +52,7 @@ namespace form_entradas_ocs.Data
 
             sb.Append("},\"saveToSentItems\":true}");
 
-            string url = "https://graph.microsoft.com/v1.0/users/" + Uri.EscapeDataString(BuzonRemitente) + "/sendMail";
+            string url = "https://graph.microsoft.com/v1.0/users/" + Uri.EscapeDataString(Remitente) + "/sendMail";
             Post(url, "application/json", sb.ToString(), token);
         }
 

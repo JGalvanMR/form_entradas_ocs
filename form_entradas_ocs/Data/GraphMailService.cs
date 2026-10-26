@@ -12,13 +12,16 @@ namespace form_entradas_ocs.Data
     /// Implementado sobre HttpWebRequest para ser compatible con .NET Framework 4.0 (sin MSAL ni System.Text.Json).
     /// El secreto se lee de la variable de entorno MRLUCKY_GRAPH_SECRET.
     /// </summary>
-    public static class GraphMailService
+    public static partial class GraphMailService
     {
         private const string ClientId = "c982ac22-b59a-441c-905a-9eb273ade26b";
         private const string TenantId = "d20460dd-675d-4b51-87cc-9d10f9175633";
         // Cuenta desde la que se envían todos los correos del sistema.
         private const string Remitente = "sistemasgab@mrlucky.com.mx";
         private const string VariableSecreto = "MRLUCKY_GRAPH_SECRET";
+
+        // Secreto integrado en el ejecutable: lo implementa GraphSecretoLocal.cs (fuera de git). Si no existe, solo se usa la variable de entorno.
+        static partial void SecretoIntegrado(ref string secreto);
 
         private static readonly object _candado = new object();
         private static string _token;
@@ -84,7 +87,9 @@ namespace form_entradas_ocs.Data
 
                 string secreto = Environment.GetEnvironmentVariable(VariableSecreto);
                 if (string.IsNullOrEmpty(secreto) || secreto.Trim().Length == 0)
-                    throw new InvalidOperationException("Falta la variable de entorno " + VariableSecreto + ".");
+                    SecretoIntegrado(ref secreto);
+                if (string.IsNullOrEmpty(secreto) || secreto.Trim().Length == 0)
+                    throw new InvalidOperationException("Falta el secreto de correo (variable de entorno " + VariableSecreto + " o GraphSecretoLocal.cs).");
 
                 string form = "client_id=" + Uri.EscapeDataString(ClientId) +
                     "&client_secret=" + Uri.EscapeDataString(secreto) +

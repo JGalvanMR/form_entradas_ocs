@@ -976,7 +976,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.4", ex.ToString(), "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + ex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + ex.ToString());
             }
         }
 
@@ -2606,25 +2606,9 @@ namespace form_entradas_ocs
 
         private void envia_correo(string data)
         {
-            MailMessage message = new MailMessage();
-            SmtpClient smtp = new SmtpClient();
-
-            message.From = new MailAddress("aescamilla@mrlucky.com.mx");
-            message.To.Add(new MailAddress("aescamilla@mrlucky.com.mx"));
-            message.Bcc.Add(new MailAddress("aescamilla@mrlucky.com.mx"));
-            string body = data;
-            message.IsBodyHtml = true;
-            message.SubjectEncoding = System.Text.Encoding.UTF8;
-            message.BodyEncoding = System.Text.Encoding.UTF8;
-            message.Subject = "Envio de Orden de Compra de entrada.";
-            message.Body = body;
-            message.From = new MailAddress("aescamilla@mrlucky.com.mx", "Angel Escamilla");
-            smtp.Credentials = new System.Net.NetworkCredential("aescamilla", "atrejo");
-            smtp.Port = 587;
-            smtp.Host = "mail1.mrlucky.com.mx";
-            smtp.EnableSsl = true;
-
-            smtp.Send(message);
+            form_entradas_ocs.Data.GraphMailService.Enviar(
+                new string[] { "aescamilla@mrlucky.com.mx" }, null, new string[] { "aescamilla@mrlucky.com.mx" },
+                "Envio de Orden de Compra de entrada.", data, null);
         }
 
         public void guardar()
@@ -2769,7 +2753,7 @@ namespace form_entradas_ocs
                 {
                     MessageBox.Show("No se generó el folio de entrada, vuelva a guardar la entrada", "SISEMP", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     thisConnection.Close();
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + q_u_e_r_y);
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + q_u_e_r_y);
                     return;
                 }
 
@@ -2842,11 +2826,11 @@ namespace form_entradas_ocs
                         if (liq_copy.Exists != true)
                         {
                             archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
                         }
 
 
-                        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de XML");
+                        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de XML");
 
                         file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
                         liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -2861,10 +2845,10 @@ namespace form_entradas_ocs
                         if (liq_copy.Exists != true)
                         {
                             archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
                         }
 
-                        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF");
+                        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF");
                         //if (txtFolioFiscal.Text != "")
                         //{
 
@@ -2892,11 +2876,11 @@ namespace form_entradas_ocs
                         if (liq_copy.Exists != true)
                         {
                             archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
                             Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Ruta: " + lblPathXml.Text, "SISEMP");
                         }
 
-                        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
+                        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
 
                         file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
                         liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -2915,11 +2899,11 @@ namespace form_entradas_ocs
                         if (liq_copy.Exists != true)
                         {
                             archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
                             Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Ruta: " + lblPathXml.Text, "SISEMP");
                         }
 
-                        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
+                        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
                     }
                 }
                 #endregion
@@ -3130,7 +3114,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.5", txtFolio.Text + " " + sqlex.ToString() + " " + query, "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + sqlex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + sqlex.ToString());
                 //this.Close();                                
                 return;
             }
@@ -3176,11 +3160,11 @@ namespace form_entradas_ocs
             //            if (liq_copy.Exists != true)
             //            {
             //                archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-            //                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
+            //                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
             //            }
 
 
-            //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de XML");
+            //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de XML");
 
             //            file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
             //            liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -3195,10 +3179,10 @@ namespace form_entradas_ocs
             //            if (liq_copy.Exists != true)
             //            {
             //                archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-            //                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
+            //                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
             //            }
 
-            //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF");
+            //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF");
 
 
             //            ////SUBIR ARCHIVO xml
@@ -3250,11 +3234,11 @@ namespace form_entradas_ocs
             //            if (liq_copy.Exists != true)
             //            {
             //                archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-            //                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
+            //                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
             //                Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Ruta: " + lblPathXml.Text, "SISEMP");
             //            }
 
-            //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
+            //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
 
             //            file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
             //            liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -3273,11 +3257,11 @@ namespace form_entradas_ocs
             //            if (liq_copy.Exists != true)
             //            {
             //                archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-            //                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
+            //                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
             //                Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Ruta: " + lblPathXml.Text, "SISEMP");
             //            }
 
-            //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
+            //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
             //        }
 
 
@@ -3346,10 +3330,10 @@ namespace form_entradas_ocs
             //            if (liq_copy.Exists != true)
             //            {
             //                archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-            //                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
+            //                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
 
             //            }
-            //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de XML Ruta: " + lblPathXml.Text);
+            //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de XML Ruta: " + lblPathXml.Text);
 
             //            file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
             //            liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -3365,10 +3349,10 @@ namespace form_entradas_ocs
             //            if (liq_copy.Exists != true)
             //            {
             //                archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-            //                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
+            //                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
             //            }
 
-            //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF");
+            //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF");
 
             //        }
 
@@ -3394,11 +3378,11 @@ namespace form_entradas_ocs
             //            if (liq_copy.Exists != true)
             //            {
             //                archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-            //                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
+            //                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
             //                Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Ruta: " + lblPathXml.Text, "SISEMP");
             //            }
 
-            //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de XML Ruta: " + lblPathXml.Text);
+            //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de XML Ruta: " + lblPathXml.Text);
 
             //            file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
             //            liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -3417,11 +3401,11 @@ namespace form_entradas_ocs
             //            if (liq_copy.Exists != true)
             //            {
             //                archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-            //                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
+            //                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
             //                Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Ruta: " + lblPathXml.Text, "SISEMP");
             //            }
 
-            //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF");
+            //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF");
             //        }
             //    }
             //}
@@ -3485,7 +3469,7 @@ namespace form_entradas_ocs
                     cmnd1.Dispose();
                     //queries.Add(query);
 
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + query);
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + query);
 
                     if (glo_var_chr_alm_clave == "02")
                     {
@@ -3602,7 +3586,7 @@ namespace form_entradas_ocs
                     cmnd1.Dispose();
                     //queries.Add(query);
 
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + query);
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + query);
 
                     //insercion en mstr_transaccion_emp
                     cmnd1 = thisConnection.CreateCommand();
@@ -3651,7 +3635,7 @@ namespace form_entradas_ocs
                         " '" + Convert.ToDecimal(rw["cant_orig"].ToString()).ToString() + "', '" + rw["resp"].ToString() + "'," +
                         " '" + Utilerias.Class1.Usu_login.ToString().Trim() + "', '" + Environment.MachineName.ToString() + "')";
 
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + query);
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + query);
 
                     thisConnection.Open();
                     //insercion en det_entrada_oc
@@ -3693,7 +3677,7 @@ namespace form_entradas_ocs
 
                     thisConnection.Close();
 
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + query);
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + query);
 
                     thisConnection.Open();
 
@@ -3837,7 +3821,7 @@ namespace form_entradas_ocs
                             if (liq_copy.Exists == true)
                             {
                                 encontrado = true;
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Encontrado Guardado(INS) de XML");
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Encontrado Guardado(INS) de XML");
                                 //liq_copy.Delete();
                             }
                             if (encontrado == false)
@@ -3847,10 +3831,10 @@ namespace form_entradas_ocs
                                 if (liq_copy.Exists != true)
                                 {
                                     archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". No encontrado Guardado 2 (INS) de XML " + file_name);
+                                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". No encontrado Guardado 2 (INS) de XML " + file_name);
 
                                 }
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Vuelto a subir Guardado(INS) de XML");
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Vuelto a subir Guardado(INS) de XML");
                             }
 
                             encontrado = false;
@@ -3860,7 +3844,7 @@ namespace form_entradas_ocs
                             if (liq_copy.Exists == true)
                             {
                                 encontrado = true;
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Encontrado Guardado 2 (INS) de PDF");
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Encontrado Guardado 2 (INS) de PDF");
                                 //liq_copy.Delete();
                             }
 
@@ -3873,10 +3857,10 @@ namespace form_entradas_ocs
                                 if (liq_copy.Exists != true)
                                 {
                                     archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". No encontrado Guardado 2 (INS) de PDF " + file_name);
+                                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". No encontrado Guardado 2 (INS) de PDF " + file_name);
                                 }
 
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Vuelto a subir Guardado(INS) de PDF");
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Vuelto a subir Guardado(INS) de PDF");
                             }
                             
 
@@ -3919,7 +3903,7 @@ namespace form_entradas_ocs
                             if (liq_copy.Exists == true)
                             {
                                 encontrado = true;
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Encontrado Guardado(INS) de XML");
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Encontrado Guardado(INS) de XML");
                                 //liq_copy.Delete();
                             }
                             if (encontrado == false)
@@ -3934,11 +3918,11 @@ namespace form_entradas_ocs
                                 if (liq_copy.Exists != true)
                                 {
                                     archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-                                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". No encontrado Guardado 2 (INS) de XML " + file_name);
+                                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". No encontrado Guardado 2 (INS) de XML " + file_name);
                                     Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Vuelto a subir 2 Ruta: " + lblPathXml.Text, "SISEMP");
                                 }
 
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".Vuelto a subir Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".Vuelto a subir Guardado(INS) de PDF Ruta: " + lblPathXml.Text);
 
                             }
 
@@ -3950,7 +3934,7 @@ namespace form_entradas_ocs
                             {
                                 //liq_copy.Delete();
                                 encontrado = true;
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Encontrado Guardado(INS) de PDF");
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Encontrado Guardado(INS) de PDF");
                             }
                             if (encontrado == false)
                             {
@@ -3965,11 +3949,11 @@ namespace form_entradas_ocs
                                 if (liq_copy.Exists != true)
                                 {
                                     archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-                                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". No encontrado Guardado 2 (INS) de PDF " + file_name);
+                                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". No encontrado Guardado 2 (INS) de PDF " + file_name);
                                     Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Vuelto a subir 2 Ruta: " + lblPathXml.Text, "SISEMP");
                                 }
 
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Vuelto a subirGuardado(INS) de PDF Ruta: " + lblPathXml.Text);
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Vuelto a subirGuardado(INS) de PDF Ruta: " + lblPathXml.Text);
                             }
                             
                         }
@@ -4040,10 +4024,10 @@ namespace form_entradas_ocs
                             if (liq_copy.Exists != true)
                             {
                                 archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
 
                             }
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de XML Ruta: " + lblPathXml.Text);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de XML Ruta: " + lblPathXml.Text);
 
                             file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
                             liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -4059,10 +4043,10 @@ namespace form_entradas_ocs
                             if (liq_copy.Exists != true)
                             {
                                 archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
                             }
 
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF");
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF");
 
                         }
 
@@ -4088,11 +4072,11 @@ namespace form_entradas_ocs
                             if (liq_copy.Exists != true)
                             {
                                 archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de XML " + file_name);
                                 Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Ruta: " + lblPathXml.Text, "SISEMP");
                             }
 
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de XML Ruta: " + lblPathXml.Text);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de XML Ruta: " + lblPathXml.Text);
 
                             file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
                             liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -4111,11 +4095,11 @@ namespace form_entradas_ocs
                             if (liq_copy.Exists != true)
                             {
                                 archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name, true);
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (INS) de PDF " + file_name);
                                 Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "Ruta: " + lblPathXml.Text, "SISEMP");
                             }
 
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado(INS) de PDF");
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado(INS) de PDF");
                         }
                     }
                 }
@@ -4132,7 +4116,7 @@ namespace form_entradas_ocs
                 Utilerias.Class1.registrar_movimiento(DateTime.Now, Environment.MachineName, Utilerias.Class1.Usu_login, "A", "2.5", var_int_sis_folios, "INSERCION DE ENTRADA(OC): " + var_int_sis_folios + ", ALMACEN: " + glo_var_chr_alm_clave, "SISEMP");
 
                 //RECORRER RECALCULO DE EMPAQUES GUARDADOS
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + "RECALCULO DE EMPAQUES GUARDADOS COSTO Y EXISTENCIA " + DateTime.Now.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + "RECALCULO DE EMPAQUES GUARDADOS COSTO Y EXISTENCIA " + DateTime.Now.ToString());
 
                 foreach (DataRow rw in tmgrdpro.Rows)
                 {
@@ -4193,7 +4177,7 @@ namespace form_entradas_ocs
                     //}
                 }
 
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + "FIN RECALCULO DE EMPAQUES GUARDADOS COSTO Y EXISTENCIA " + DateTime.Now.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + "FIN RECALCULO DE EMPAQUES GUARDADOS COSTO Y EXISTENCIA " + DateTime.Now.ToString());
 
                 //28/04/2026 AJUSTE DE ORDEN DE COMPRA SEGUN LA FACTURA
                 if (glo_var_chr_alm_clave == "03" || glo_var_chr_alm_clave == "11" || glo_var_chr_alm_clave == "08")
@@ -4236,7 +4220,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.5", var_int_sis_folios + " " + sqlex.ToString() + " " + query, "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + sqlex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + sqlex.ToString());
                 //this.Close();                                
                 return;
             }
@@ -4410,10 +4394,10 @@ namespace form_entradas_ocs
                     if (liq_copy.Exists != true)
                     {
                         archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (MOD) de XML " + file_name);
+                        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (MOD) de XML " + file_name);
                     }
 
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".  Guardado(MOD) de archivo XML " + file_name);
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".  Guardado(MOD) de archivo XML " + file_name);
 
                     file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
                     liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -4428,10 +4412,10 @@ namespace form_entradas_ocs
                     if (liq_copy.Exists != true)
                     {
                         archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (MOD) de PDF " + file_name);
+                        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (MOD) de PDF " + file_name);
                     }
 
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
                 }
 
             }
@@ -4452,10 +4436,10 @@ namespace form_entradas_ocs
                     if (liq_copy.Exists != true)
                     {
                         archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (MOD) de XML " + file_name);
+                        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (MOD) de XML " + file_name);
                     }
 
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".  Guardado(MOD) de archivo XML " + file_name);
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".  Guardado(MOD) de archivo XML " + file_name);
 
                     file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
                     liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -4470,10 +4454,10 @@ namespace form_entradas_ocs
                     if (liq_copy.Exists != true)
                     {
                         archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (MOD) de PDF " + file_name);
+                        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (MOD) de PDF " + file_name);
                     }
 
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
                 }
             }
             //FIN 15/01/2025
@@ -4675,7 +4659,7 @@ namespace form_entradas_ocs
                     foreach (DataRow rw in tmgrdpro.Rows)
                     {
                         if (this.glo_var_chr_alm_clave == "01" || this.glo_var_chr_alm_clave == "02")
-                            //Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " Empaque: " + rw["clave"].ToString() + ", Cantidad: " + rw["cantidad"].ToString() + ", Unitario: " + rw["unitario"].ToString() + ", Costo: " + rw["costo"].ToString());
+                            //form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " Empaque: " + rw["clave"].ToString() + ", Cantidad: " + rw["cantidad"].ToString() + ", Unitario: " + rw["unitario"].ToString() + ", Costo: " + rw["costo"].ToString());
                         if (rw["borrar"].ToString() == "1")
                             continue;
                         var_chr_emp_clave = rw["clave"].ToString();
@@ -4945,7 +4929,7 @@ namespace form_entradas_ocs
                         cmnd1.Dispose();
 
                         if (this.glo_var_chr_alm_clave == "01" || this.glo_var_chr_alm_clave == "02")
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " Consulta(MODIFICACION): " + query);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " Consulta(MODIFICACION): " + query);
 
                         //14/11/2018 cambio en la forma de saldar orden de compra
                         string sumatoria = "";
@@ -5090,10 +5074,10 @@ namespace form_entradas_ocs
                     //        if (liq_copy.Exists != true)
                     //        {
                     //            archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                    //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (MOD) de XML " + file_name);
+                    //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (MOD) de XML " + file_name);
                     //        }
 
-                    //        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".  Guardado(MOD) de archivo XML " + file_name);
+                    //        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".  Guardado(MOD) de archivo XML " + file_name);
 
                     //        file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
                     //        liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -5108,10 +5092,10 @@ namespace form_entradas_ocs
                     //        if (liq_copy.Exists != true)
                     //        {
                     //            archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                    //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (MOD) de PDF " + file_name);
+                    //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (MOD) de PDF " + file_name);
                     //        }
 
-                    //        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
+                    //        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
                     //    }
 
 
@@ -5155,10 +5139,10 @@ namespace form_entradas_ocs
                     //        if (liq_copy.Exists != true)
                     //        {
                     //            archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                    //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (MOD) de XML " + file_name);
+                    //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (MOD) de XML " + file_name);
                     //        }
 
-                    //        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".  Guardado(MOD) de archivo XML " + file_name);
+                    //        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".  Guardado(MOD) de archivo XML " + file_name);
 
                     //        file_name = txt_prov_clave.Text + "_" + txt_ent_factura.Text + "_" + txtFolio.Text + ".pdf";
                     //        liq_copy = new FileInfo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
@@ -5173,10 +5157,10 @@ namespace form_entradas_ocs
                     //        if (liq_copy.Exists != true)
                     //        {
                     //            archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                    //            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Guardado 2 (MOD) de PDF " + file_name);
+                    //            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Guardado 2 (MOD) de PDF " + file_name);
                     //        }
 
-                    //        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
+                    //        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
                     //    }
                     //}
 
@@ -5199,12 +5183,12 @@ namespace form_entradas_ocs
                         if (liq_copy.Exists == true)
                         {
                             //liq_copy.Delete();
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Archivo existe XML" + file_name);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Archivo existe XML" + file_name);
                         }
                         else
                         {
                             archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Archivo no existe se volvio a subir XML " + file_name);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Archivo no existe se volvio a subir XML " + file_name);
                         }
                         
 
@@ -5213,17 +5197,17 @@ namespace form_entradas_ocs
 
                         if (liq_copy.Exists == true)
                         {
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Archivo existe PDF " + file_name);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Archivo existe PDF " + file_name);
                         }
                         else
                         {
                             //archivo = new FileInfo(@lblPathXml.Text.Replace(".xml", ".pdf"));
                             archivo.CopyTo(@"\\\\gabira1\\FacturasExternos\\" + file_name);
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ". Archivo no existe se volvio a subir PDF " + file_name);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ". Archivo no existe se volvio a subir PDF " + file_name);
                         }
                         
 
-                        //Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
+                        //form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + ".  Guardado(MOD) de archivo PDF " + file_name);
                     }
                     
 
@@ -5231,7 +5215,7 @@ namespace form_entradas_ocs
 
                     //imprmir_entrada_servidor();
                     //RECORRER RECALCULO DE EMPAQUES GUARDADOS
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + "RECALCULO DE EMPAQUES MODIFICADOS COSTO Y EXISTENCIA " + DateTime.Now.ToString());
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + "RECALCULO DE EMPAQUES MODIFICADOS COSTO Y EXISTENCIA " + DateTime.Now.ToString());
                     foreach (DataRow rw in tmgrdpro.Rows)
                     {
                         if (glo_var_chr_alm_clave == "13")
@@ -5270,7 +5254,7 @@ namespace form_entradas_ocs
                             thisConnection.Close();
                         }
                     }
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + "FIN RECALCULO DE EMPAQUES MODIFICADOS COSTO Y EXISTENCIA " + DateTime.Now.ToString());
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + "FIN RECALCULO DE EMPAQUES MODIFICADOS COSTO Y EXISTENCIA " + DateTime.Now.ToString());
                     MessageBox.Show("Datos modificados", "SISEMP", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     if (MessageBox.Show("Imprimir Entrada en Impresora", "SISEMP", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -5335,7 +5319,7 @@ namespace form_entradas_ocs
                     if (thisConnection.State == ConnectionState.Open)
                         thisConnection.Close();
                     Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.5", txtFolio.Text + " " + sqlex.ToString() + " " + query, "SISEMP");
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + sqlex.ToString());
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + sqlex.ToString());
                     //this.Close();                                
                     return;
                 }
@@ -5347,7 +5331,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.5", txtFolio.Text + " " + sqlex.ToString() + " " + query, "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + sqlex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + sqlex.ToString());
                 //this.Close();                                
                 return;
             }
@@ -5932,7 +5916,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.5", txtFolio.Text + " " + sqlex.ToString() + " " + query, "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + sqlex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + sqlex.ToString());
                 //this.Close();                                
                 return;
             }
@@ -6105,7 +6089,7 @@ namespace form_entradas_ocs
                     if (thisConnection.State == ConnectionState.Open)
                         thisConnection.Close();
                     Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.5", txtFolio.Text + " " + sqlex.ToString() + " " + query, "SISEMP");
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + sqlex.ToString());
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + sqlex.ToString());
                     //this.Close();                                
                     return;
                 }
@@ -6261,7 +6245,7 @@ namespace form_entradas_ocs
                 //    if (thisConnection.State == ConnectionState.Open)
                 //        thisConnection.Close();
                 //    Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.5", txtFolio.Text + " " + sqlex.ToString() + " " + query, "SISEMP");
-                //    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + sqlex.ToString());
+                //    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + sqlex.ToString());
                 //    //this.Close();                                
                 //    return;
                 //}
@@ -7544,7 +7528,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.4", ex.ToString(), "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + ex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + ex.ToString());
             }
 
 
@@ -7749,7 +7733,7 @@ namespace form_entradas_ocs
         {
             try
             {
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + "Entra EMAIL");
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + "Entra EMAIL");
                 
 
                 using (PrintDocument pd = new PrintDocument())
@@ -7802,10 +7786,10 @@ namespace form_entradas_ocs
             catch (Exception ex)
             {
                 MessageBox.Show("Error de catch " + ex.ToString());
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + ex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + ex.ToString());
                 if (ex.ToString().Contains("El proceso no puede obtener acceso al archivo"))
                 {
-                    Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + "Entra a catch");
+                    form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + "Entra a catch");
                     //printDocument2.Dispose();
                     //printDocument2.PrinterSettings.PrinterName = "Foxit Reader PDF Printer";
                     //printDocument2.Print();
@@ -8143,7 +8127,7 @@ namespace form_entradas_ocs
                     {
                         if (tmgrdpro.Rows[u]["borrar"].ToString() == "1")
                             continue;
-                        Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + "Entra EMAIL");
+                        form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + "Entra EMAIL");
                         if (Convert.ToDecimal(tmgrdpro.Rows[u]["cantidad"].ToString()) > 0 && Convert.ToDecimal(tmgrdpro.Rows[u]["unitario"].ToString()) > 0)
                         {
                             g.DrawString(Convert.ToDecimal(tmgrdpro.Rows[u]["cantidad"].ToString()).ToString("###,###,##0.00"), fuente, brsh, posicion(Convert.ToDecimal(tmgrdpro.Rows[u]["cantidad"].ToString()).ToString("###,###,##0.00")), renglon);
@@ -8923,7 +8907,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.5", ex.ToString(), "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + ex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + ex.ToString());
             }
         }
 
@@ -9128,7 +9112,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.5", txtFolio.Text + " " + sqlex.ToString() + " " + query, "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + sqlex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + sqlex.ToString());
                 //this.Close();                                
                 return;
             }
@@ -10970,7 +10954,7 @@ namespace form_entradas_ocs
                         }
                         else
                         {
-                            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + "Proveedor XML: " + nom_prov + ", RFC XML: " + lblRFC.Text + " y RFC BD: " + ProvRfc);
+                            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + "Proveedor XML: " + nom_prov + ", RFC XML: " + lblRFC.Text + " y RFC BD: " + ProvRfc);
                         }
                     }
 
@@ -11687,7 +11671,7 @@ namespace form_entradas_ocs
             {
                 
                 thisConnection.Close();
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + ex.ToString());
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + ex.ToString());
                 int num = (int)MessageBox.Show(ex.ToString());
             }
         }
@@ -12089,7 +12073,7 @@ namespace form_entradas_ocs
                         {
                             if (ex.ToString().Contains("La transacción (id. de proceso"))
                             {
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + ex.ToString() + "1RA QUERY interbloqueo: " + query);
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + ex.ToString() + "1RA QUERY interbloqueo: " + query);
 
                                 cmnd1 = thisConnection.CreateCommand();
                                 query = "UPDATE tb_cat_empaques SET emp_costo = '" + Math.Round(mcosp, 3).ToString() + "' " +
@@ -12117,7 +12101,7 @@ namespace form_entradas_ocs
                         {
                             if (ex.ToString().Contains("La transacción (id. de proceso"))
                             {
-                                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + ex.ToString() + "2DA QUERY interbloqueo: " + query);
+                                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + ex.ToString() + "2DA QUERY interbloqueo: " + query);
 
                                 cmnd1 = thisConnection.CreateCommand();
                                 query = "UPDATE tb_cat_empaques SET emp_costo = '" + Math.Round(mcosp, 3).ToString() + "' " +
@@ -12156,7 +12140,7 @@ namespace form_entradas_ocs
                 cmnd1.ExecuteNonQuery();
                 cmnd1.Dispose();
 
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + query);
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + query);
 
                 thisConnection.Close();
 
@@ -12167,7 +12151,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.1", ex.ToString(), "SISEMP");
-                Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + ex.ToString() + "QUERY: " + query);
+                form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + ex.ToString() + "QUERY: " + query);
             }
             return mcosp.ToString();
         }
@@ -12328,7 +12312,7 @@ namespace form_entradas_ocs
 
             thisConnection.Close();
 
-            Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + query);
+            form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + query);
 
             return actual;
         }
@@ -13116,7 +13100,7 @@ namespace form_entradas_ocs
                 cmnd1.Dispose();
                 thisConnection.Close();
 
-                if (Convert.ToInt32(conteo) == 1 && (Utilerias.Class1.Usu_login.Trim() == "PEDRO" || Utilerias.Class1.Usu_login.Trim() == "N"))
+                if (Convert.ToInt32(conteo) >= 1 && (Utilerias.Class1.Usu_login.Trim() == "PEDRO" || Utilerias.Class1.Usu_login.Trim() == "N"))
                 {
                     factura_extra dlg = new factura_extra(txtFolio.Text, glo_var_chr_alm_clave, DDLAlmacen1.SelectedItem.ToString(), txt_prov_clave.Text, DDLProveedor.SelectedItem.ToString(), Convert.ToDateTime(dtpFecha.Text).ToShortDateString());
                     dlg.ShowDialog();
@@ -13459,7 +13443,7 @@ namespace form_entradas_ocs
                 if (thisConnection.State == ConnectionState.Open)
                     thisConnection.Close();
                 //Utilerias.Class1.registro_errores(DateTime.Now, Utilerias.Class1.Usu_login, Environment.MachineName, "2.1", ex.ToString(), "SISEMP");
-                //Utilerias.Class1.SendMail("aescamilla@mrlucky.com.mx", "aescamilla", "atrejo", Environment.MachineName + " " + ex.ToString() + "QUERY: " + query);
+                //form_entradas_ocs.Data.GraphMailService.NotificarError(Environment.MachineName + " " + ex.ToString() + "QUERY: " + query);
             }
             return mcosp.ToString();
         }
@@ -14619,6 +14603,11 @@ namespace form_entradas_ocs
             //                "<td style='text-align:center; color:#d9534f;'>[CANTIDAD NUEVA]</td>" +
             //                "<td style='text-align:right; color:#d9534f;'>[IMPORTE NUEVO]</td>" +
             //            "</tr>" +
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void btnReajustar_Click(object sender, EventArgs e)
